@@ -19,7 +19,8 @@ import {
   Button,
 } from "@shopify/polaris";
 import { getInventory, claimStock } from "~/models/inventory.server";
-import InventoryItem from "~/components/inventoryItem";
+import InventoryList from "~/components/InventoryList";
+import ErrorBanner from "~/components/ErrorBanner";
 
 
 export async function loader() {
@@ -71,37 +72,8 @@ export default function Dashboard() {
 }
 
 
-function InventoryList({ items }: { items: any[] }) {
-  return (
-    <BlockStack gap="200">
-      {items.map((item) => (
-        <InventoryItem key={item.id} item={item} />
-      ))}
-    </BlockStack>
-  );
-}
+// Imports updated at top of file
 
-function ErrorBanner() {
-  const error = useAsyncError() as Error;
-  const revalidator = useRevalidator();
-
-  if (revalidator.state === "loading") {
-    return <SkeletonBodyText lines={3} />;
-  }
-
-  return (
-    <Banner
-      title="Critical Error"
-      tone="critical"
-      action={{
-        content: "Retry",
-        onAction: () => revalidator.revalidate(),
-      }}
-    >
-      <p>{error.message || "Failed to load inventory."}</p>
-    </Banner>
-  );
-}
 
 
 export function ErrorBoundary() {
